@@ -26,20 +26,8 @@ namespace DoAnWeb.Controllers
         }
         [Route("/post-{slug}-{id:long}.html", Name = "Details")]
 
-        public IActionResult Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var post = _context.Posts
-                .FirstOrDefault(m => (m.PostId == id) && (m.IsActive == true));
-            if (post == null)
-            {
-                return NotFound();
-            }
-            return View(post);
-        }
+  
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -16,6 +16,8 @@ namespace DoAnWeb.Models
         {
         }
 
+        public virtual DbSet<AdminMenu> AdminMenus { get; set; } = null!;
+        public virtual DbSet<Blog> Blogs { get; set; } = null!;
         public virtual DbSet<Car> Cars { get; set; } = null!;
         public virtual DbSet<CarImage> CarImages { get; set; } = null!;
         public virtual DbSet<Contact> Contacts { get; set; } = null!;
@@ -23,7 +25,6 @@ namespace DoAnWeb.Models
         public virtual DbSet<Menu> Menus { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
-        public virtual DbSet<Post> Posts { get; set; } = null!;
         public virtual DbSet<Review> Reviews { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -32,12 +33,56 @@ namespace DoAnWeb.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("data source=QUANGTHINH\\MAYAO;initial catalog=Weboto;integrated security=True;TrustServerCertificate=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<AdminMenu>(entity =>
+            {
+                entity.ToTable("AdminMenu");
+
+                entity.Property(e => e.ActionName).HasMaxLength(20);
+
+                entity.Property(e => e.AreaName).HasMaxLength(20);
+
+                entity.Property(e => e.ControllerName).HasMaxLength(20);
+
+                entity.Property(e => e.Icon).HasMaxLength(50);
+
+                entity.Property(e => e.IdName).HasMaxLength(50);
+
+                entity.Property(e => e.ItemName).HasMaxLength(50);
+
+                entity.Property(e => e.ItemTarget).HasMaxLength(20);
+            });
+
+            modelBuilder.Entity<Blog>(entity =>
+            {
+                entity.Property(e => e.Adstract).HasMaxLength(255);
+
+                entity.Property(e => e.Author).HasMaxLength(30);
+
+                entity.Property(e => e.Contents).HasColumnType("ntext");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Images).HasMaxLength(200);
+
+                entity.Property(e => e.Link).HasMaxLength(200);
+
+                entity.Property(e => e.MenuId).HasColumnName("MenuID");
+
+                entity.Property(e => e.Title).HasMaxLength(255);
+
+                entity.HasOne(d => d.Menu)
+                    .WithMany(p => p.Blogs)
+                    .HasForeignKey(d => d.MenuId)
+                    .HasConstraintName("FK_Post_Menus");
+            });
+
             modelBuilder.Entity<Car>(entity =>
             {
                 entity.Property(e => e.CarId).HasColumnName("CarID");
@@ -97,8 +142,6 @@ namespace DoAnWeb.Models
 
             modelBuilder.Entity<Menu>(entity =>
             {
-                entity.ToTable("Menu");
-
                 entity.Property(e => e.MenuId).HasColumnName("MenuID");
 
                 entity.Property(e => e.ActionName).HasMaxLength(50);
@@ -161,34 +204,6 @@ namespace DoAnWeb.Models
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.OrderId)
                     .HasConstraintName("FK_OrderDetails_Orders");
-            });
-
-            modelBuilder.Entity<Post>(entity =>
-            {
-                entity.ToTable("Post");
-
-                entity.Property(e => e.PostId).HasColumnName("PostID");
-
-                entity.Property(e => e.Adstract).HasMaxLength(255);
-
-                entity.Property(e => e.Author).HasMaxLength(30);
-
-                entity.Property(e => e.Contents).HasColumnType("ntext");
-
-                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Images).HasMaxLength(200);
-
-                entity.Property(e => e.Link).HasMaxLength(200);
-
-                entity.Property(e => e.MenuId).HasColumnName("MenuID");
-
-                entity.Property(e => e.Title).HasMaxLength(255);
-
-                entity.HasOne(d => d.Menu)
-                    .WithMany(p => p.Posts)
-                    .HasForeignKey(d => d.MenuId)
-                    .HasConstraintName("FK_Post_Menus");
             });
 
             modelBuilder.Entity<Review>(entity =>

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 namespace DoAnWeb.Models
 {
     public class DataContext : DbContext
@@ -7,6 +8,7 @@ namespace DoAnWeb.Models
         {
         }
         public DbSet<Menu> Menus { get; set; }  
-        public DbSet<Post> Posts { get; set; }
+
+
     }
 }

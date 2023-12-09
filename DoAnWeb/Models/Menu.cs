@@ -7,7 +7,7 @@ namespace DoAnWeb.Models
     {
         public Menu()
         {
-            Posts = new HashSet<Post>();
+            Blogs = new HashSet<Blog>();
         }
 
         public long MenuId { get; set; }
@@ -21,6 +21,6 @@ namespace DoAnWeb.Models
         public int? MenuOrder { get; set; }
         public int? Position { get; set; }
 
-        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<Blog> Blogs { get; set; }
     }
 }
