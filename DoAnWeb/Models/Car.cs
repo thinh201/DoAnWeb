@@ -17,9 +17,9 @@ namespace DoAnWeb.Models
         public string? Model { get; set; }
         public int? Year { get; set; }
         public string? Color { get; set; }
-        public decimal? PicePerDay { get; set; }
+        public decimal? PricePerDay { get; set; }
         public string? Description { get; set; }
-        public string? Available { get; set; }
+        public bool? IsActive { get; set; }
 
         public virtual ICollection<CarImage> CarImages { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

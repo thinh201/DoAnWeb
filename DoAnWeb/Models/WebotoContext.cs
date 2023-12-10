@@ -87,10 +87,6 @@ namespace DoAnWeb.Models
             {
                 entity.Property(e => e.CarId).HasColumnName("CarID");
 
-                entity.Property(e => e.Available)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
-
                 entity.Property(e => e.Brand).HasMaxLength(70);
 
                 entity.Property(e => e.Color).HasMaxLength(50);
@@ -99,7 +95,7 @@ namespace DoAnWeb.Models
 
                 entity.Property(e => e.Model).HasMaxLength(55);
 
-                entity.Property(e => e.PicePerDay).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.PricePerDay).HasColumnType("decimal(18, 0)");
             });
 
             modelBuilder.Entity<CarImage>(entity =>
