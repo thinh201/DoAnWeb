@@ -12,6 +12,7 @@ namespace DoAnWeb.Controllers
         {
             _context = context;
         }
+
         public IActionResult Index()
         {
             var carsWithImages = _context.Cars
@@ -20,6 +21,28 @@ namespace DoAnWeb.Controllers
                 .ToList();
 
             return View(carsWithImages);
+        }
+
+        [Route("/car-{slug}-{id:long}.html", Name = "CarDetails")]
+
+
+
+        public IActionResult CarDetails(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var carsWithImages = _context.Cars
+               .Where(c => c.IsActive == true)
+               .Include(c => c.CarImages)
+               .ToList();
+            if (carsWithImages == null)
+            {
+                return NotFound();
+            }
+            return View(carsWithImages);
+
         }
     }
 }

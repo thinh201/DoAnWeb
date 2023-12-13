@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DoAnWeb.Models
+namespace DoAnWeb.Areas.Admin.Models
 {
+    [Table("AdminMenu")]
     public partial class AdminMenu
     {
         public long AdminMenuId { get; set; }

@@ -12,7 +12,7 @@ namespace DoAnWeb.Models
         public string? Images { get; set; }
         public string? Link { get; set; }
         public string? Author { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
         public bool? IsActive { get; set; }
         public int? BlogOrder { get; set; }
         public long? MenuId { get; set; }

@@ -24,9 +24,10 @@ namespace DoAnWeb.Controllers
         {
             return View();
         }
-        [Route("/post-{slug}-{id:long}.html", Name = "Details")]
 
-  
+
+
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
