@@ -11,8 +11,7 @@
     <div class="row mt-3">
         <div class="col-md-1"></div>
         <div class="form-addnew col-md-12 d-flex">
-            <form asp-action="CreatePost" class="row" enctype="multipart/form-data" method="post">
-
+            <form asp-action="CreatePost" asp-controller="Post" asp-area="Admin" class="row" enctype="multipart/form-data" method="post">
                 <div class="col-md-8">
                 <div class="row">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

@@ -2,6 +2,7 @@
 using DoAnWeb.Context;
 using DoAnWeb.Models;
 using DoAnWeb.Models.Authentication;
+using DoAnWeb.SessionSystem;
 using DoAnWeb.Ultilities;
 using DoAnWeb.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -62,7 +63,8 @@ namespace DoAnWeb.Areas.Admin.Controllers
         [Route("CreatePost")]
         public async Task<IActionResult> CreatePost(Blog post, IFormFile? BlogImage)
         {
-            if (post == null)
+            var userId = HttpContext.Session.GetInt32(SessionKey.USERID);
+            if (post == null || userId == null)
             {
                 _notyf.Error("Thêm mới bài viết thất bại");
                 return NotFound();
@@ -84,7 +86,7 @@ namespace DoAnWeb.Areas.Admin.Controllers
                 post.BlogSlug = Functions.AliasLink(post.BlogTitle);
                 post.IsActive = true;
                 post.CreatedDate = DateTime.Now;
-                post.CreatedById = 1;
+                post.CreatedById = userId;
                 post.BlogImage = BlogImage != null
                     ? UploadImage.UploadSingleImage(BlogImage)
                     : "/images/default-car.png";

@@ -21,7 +21,7 @@ namespace DoAnWeb.Utilities
 
             // Example: /uploads/images/fileName
             // Return path to save in database
-            return filePath.Substring(filePath.IndexOf("/uploads", StringComparison.Ordinal));
+            return filePath.Substring(filePath.IndexOf("\\uploads"));
         }
 
         // Upload single image with custom folder name
@@ -51,7 +51,7 @@ namespace DoAnWeb.Utilities
 
             // Example: /uploads/storeFolder/fileName
             // Return path to save in database
-            return path.Substring(path.IndexOf("/uploads", StringComparison.Ordinal));
+            return path.Substring(path.IndexOf("\\uploads"));
         }
 
         // Upload multiple images with custom folder name
@@ -84,7 +84,7 @@ namespace DoAnWeb.Utilities
 
                 // Example: /uploads/storeFolder/fileName
                 // Return path to save in database
-                listPath.Add(path.Substring(path.IndexOf("/uploads", StringComparison.Ordinal)));
+                listPath.Add(path.Substring(path.IndexOf("\\uploads")));
             }
 
             return listPath;
@@ -119,7 +119,7 @@ namespace DoAnWeb.Utilities
 
                 // Example: /uploads/images/fileName
                 // Return path to save in database
-                listPath.Add(path.Substring(path.IndexOf("/uploads", StringComparison.Ordinal)));
+                listPath.Add(path.Substring(path.IndexOf("\\uploads")));
             }
 
             return listPath;
