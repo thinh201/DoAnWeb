@@ -2,6 +2,10 @@ namespace DoAnWeb.Utilities
 {
     public static class UploadImage
     {
+        private static string ConvertToUrlPath(string physicalPath)
+        {
+            return physicalPath.Replace(Path.DirectorySeparatorChar, '/');
+        }
         // Upload multiple images into default folder "/uploads/images"
         public static string? UploadSingleImage(IFormFile? file)
         {
@@ -21,7 +25,7 @@ namespace DoAnWeb.Utilities
 
             // Example: /uploads/images/fileName
             // Return path to save in database
-            return filePath.Substring(filePath.IndexOf("\\uploads"));
+            return ConvertToUrlPath(filePath.Substring(filePath.IndexOf("\\uploads")));
         }
 
         // Upload single image with custom folder name
@@ -51,7 +55,7 @@ namespace DoAnWeb.Utilities
 
             // Example: /uploads/storeFolder/fileName
             // Return path to save in database
-            return path.Substring(path.IndexOf("\\uploads"));
+            return ConvertToUrlPath(path.Substring(path.IndexOf("\\uploads")));
         }
 
         // Upload multiple images with custom folder name
@@ -87,7 +91,7 @@ namespace DoAnWeb.Utilities
                 listPath.Add(path.Substring(path.IndexOf("\\uploads")));
             }
 
-            return listPath;
+            return listPath.ConvertAll(ConvertToUrlPath);
         }
 
         // Upload multiple images with default folder name
@@ -122,7 +126,7 @@ namespace DoAnWeb.Utilities
                 listPath.Add(path.Substring(path.IndexOf("\\uploads")));
             }
 
-            return listPath;
+            return listPath.ConvertAll(ConvertToUrlPath);
         }
     }
 }
