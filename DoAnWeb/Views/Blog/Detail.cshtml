@@ -1,0 +1,48 @@
+@model DoAnWeb.Models.Blog;
+@{
+    ViewData["Title"] = @Model.BlogTitle;
+}
+<section class="hero-wrap hero-wrap-2 js-fullheight" style="background-image: url('@Model.BlogImage'); height: 651px; background-position: 50% 54px;" data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row no-gutters slider-text js-fullheight align-items-end justify-content-start" style="height: 651px;">
+            <div class="col-md-9 ftco-animate pb-5 fadeInUp ftco-animated">
+                <p class="breadcrumbs">
+                    <span class="mr-2">
+                        <a href="/">Trang chủ <i class="ion-ios-arrow-forward"></i></a>
+                    </span>
+                    <span class="mr-2">
+                        <a asp-controller="BLog" asp-action="Index">Bài viết <i class="ion-ios-arrow-forward"></i></a>
+                    </span> <span>Chi tiết bài viết</span>
+                </p>
+                <h1 class="mb-3 fs-2 lh-base fw-500">@Model.BlogTitle</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="ftco-section ftco-degree-bg">
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 ftco-animate fadeInUp ftco-animated">
+            @Html.Raw(Model.BlogDetail)
+        </div>
+        <div class="col-md-4 sidebar ftco-animate fadeInUp ftco-animated">
+            <div class="sidebar-box">
+                <form action="#" class="search-form">
+                    <div class="form-group">
+                        <span class="icon icon-search"></span>
+                        <input type="text" class="form-control" placeholder="Tìm kiếm">
+                    </div>
+                </form>
+            </div>
+            <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+                <h3>Bài viết gần đây</h3>
+                @await Component.InvokeAsync("RecentBlog")
+                <div class="sidebar-box ftco-animate fadeInUp ftco-animated">
+                    <h3>Trích dẫn</h3>
+                    <p>@Html.Raw(Model.BlogDesc)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

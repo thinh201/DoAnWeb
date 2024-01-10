@@ -1,0 +1,182 @@
+@model IList<DoAnWeb.Models.Car>;
+@{
+    ViewData["Title"] = "Quản lý danh sách xe";
+}
+<div class="pagetitle">
+    <h3 class="text-center">Quản lý danh sách xe</h3>
+</div><!-- End Page Title -->
+<div class="card mt-3">
+    <div class="card-body pt-4">
+        <div class="action-box d-flex align-items-end justify-content-between">
+            <div class="filter-box d-flex">
+                <div class="list-filter mx-3">
+                    <form>
+                        <div class="form-group search-item-box">
+                            <input class="form-control" id="SearchInput" placeholder="Tìm kiếm..."/>
+                            <span class="search-item-btn">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="action-box">
+                <a class="btn btn-primary" asp-controller="Cars" asp-action="CreateCar" asp-area="Admin">Thêm mới</a>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="section dashboard">
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr class="text-nowrap text-center">
+                        <th class="text-center">Hình ảnh</th>
+                        <th>Hãng xe</th>
+                        <th>Dòng xe</th>
+                        <th>Màu sắc</th>
+                        <th>Năm sản xuất</th>
+                        <th>Giá thuê</th>
+                        <th>Trạng thái</th>
+                        <th>Chức năng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center" id="row-@item.CarId" style="vertical-align:middle;">
+                            <th scope="row" class="text-center">
+                                <img src="@item.CarImages?.LastOrDefault()?.ImageUrl" width="100px" style="border-radius: 10px"/>
+                            </th>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.Brand</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.Model</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 100px; word-wrap: break-word;">@item.Color</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 100px; word-wrap: break-word;">@item.Year</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.PricePerDay?.ToString("#,##0 VND")</div>
+                            </td>
+                            <td>
+                                <div class="table-cell text-center">
+                                    <div class="switch m-r-10">
+                                        @if (item.IsActive == true)
+                                        {
+                                            <input type="checkbox" id="Active-@item.CarId" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" id="Active-@item.CarId">
+                                        }
+                                        <label class="ChangeActiveStatusButton" data-carid="@item.CarId" data-currentvalue="@item.IsActive"></label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="btn px-2 text-white btn-warning" asp-action="EditCar" asp-controller="Cars" asp-area="Admin" asp-route-id="@item.CarId">
+                                    <i class="tf-icons bx bx-pen"></i>
+                                </a>
+                                <button class="btn px-2 text-white btn-danger" onclick="DisplayDeleteModal(@item.CarId)">
+                                    <i class="tf-icons bx bx-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+            <div aria-label="Page navigation example" class="text-center mt-3 align-items-center">
+                <ul class="pagination text-center d-inline-block">
+                    <pager class="pager-container" list="@Model" asp-route-CategoryId="@ViewBag.CategoryId" asp-area="Admin" asp-controller="Product" asp-action="Index"/>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xoá xe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="IdToDelete"/>
+                    Bạn có chắc chắn muốn xóa loại xe này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="button" id="btnConfirmDelete" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnConfirmDelete").on("click", function () {
+                let idToDelete = $("#IdToDelete").val();
+                let UrlHandle = "/admin/cars/delete";
+
+                $.ajax({
+                    url: UrlHandle,
+                    type: "Post",
+                    data: {
+                        IdToDelete: idToDelete,
+                    },
+                    success: function (data) {
+                        if (data.status === 0){
+                            $("#deleteModal").modal("hide");
+                            $("#row-" + idToDelete).remove();
+                            toastr.success("Xóa xe thành công");
+                        }
+                        else {
+                            toastr.error("Đang bị lỗi, vui lòng quay lại sau");
+                        }
+                     }
+                    })
+                })
+            $(".ChangeActiveStatusButton").on("click", function (e) {
+                let idToUpdate = $(this).data('carid');
+                console.log(idToUpdate);
+                $.ajax({
+                    url: "/admin/cars/update-status",
+                    type: "POST",
+                    data: {
+                       idToUpdate : idToUpdate,
+                    },
+                    success: function (data) {
+                        if (data.status === 0) {
+                            if (data.currentValue === true) {
+                                $('#Active-'+ idToUpdate).prop('checked', true);
+                                toastr.success("Đã hiển thị xe");
+                            } else {
+                                $('#Active-'+idToUpdate).prop('checked', false);
+                                toastr.success("Đã ngung hiển thị xe");
+                            }
+                        } else {
+                            toastr.success("Đang bị lỗi, vui lòng quay lại sau");
+                        }
+                    },
+                })
+            });
+        });
+
+    </script>
+    <script type="text/javascript">
+        function DisplayDeleteModal(id) {
+            $("#IdToDelete").val(id);
+            $("#deleteModal").modal("show");
+        }
+    </script>
+}

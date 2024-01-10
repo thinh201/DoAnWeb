@@ -1,0 +1,187 @@
+@model IList<DoAnWeb.Models.Order>;
+@{
+    ViewData["Title"] = "Quản lý đơn thuê xe";
+}
+<div class="pagetitle">
+    <h3 class="text-center">Quản lý đơn thuê xe</h3>
+</div><!-- End Page Title -->
+<div class="card mt-3">
+    <div class="card-body pt-4">
+        <div class="action-box d-flex align-items-end justify-content-between">
+            <div class="filter-box d-flex">
+                <div class="list-filter mx-3">
+                    <form>
+                        <div class="form-group search-item-box">
+                            <input class="form-control" id="SearchInput" placeholder="Tìm kiếm..."/>
+                            <span class="search-item-btn">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="section dashboard">
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr class="text-nowrap text-center">
+                        <th>ID</th>
+                        <th>Loại xe</th>
+                        <th>Tên khách hàng</th>
+                        <th>Số điện thoại</th>
+                        <th>Ngày đặt</th>
+                        <th>Số ngày thuê</th>
+                        <th>Tổng tiền</th>
+                        <th>Trạng thái</th>
+                        <th>Chức năng</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="text-center" style="vertical-align:middle;" id="row-@item.OrderId">
+                            <td style="white-space: normal">
+                                <div>@item.OrderId</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.Car.Brand @item.Car.Model</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.FullName</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.PhoneNumber</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 100px; word-wrap: break-word;">@item.OrderDate?.ToString("dd/MM/yyyy")</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 100px; word-wrap: break-word;">@item.BookingDays</div>
+                            </td>
+                            <td style="white-space: normal">
+                                <div style="width: 200px; word-wrap: break-word;">@item.TotalFee?.ToString("#,##0 VND")</div>
+                            </td>
+                            <td>
+                                <div class="table-cell text-center">
+                                    <span>@item.Status?.StatusName</span>
+                                </div>
+                            </td>
+                            <td class="order-data-container" data-id="@item.OrderId" data-status="@item.StatusId">
+                                <a asp-action="Detail" asp-controller="Orders" asp-area="Admin" asp-route-id="@item.OrderId" class="btn px-2 text-white btn-success">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                                <a class="btn px-2 text-white btn-warning" data-bs-toggle="modal" data-bs-target="#change-status-modal">
+                                    <i class="tf-icons bx bx-cog"></i>
+                                </a>
+                                <button class="btn px-2 text-white btn-danger" onclick="DisplayDeleteModal(@item.OrderId)">
+                                    <i class="tf-icons bx bx-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận xoá đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="IdToDelete"/>
+                    Bạn có chắc chắn muốn xoá đơn hàng này không?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="button" id="btnConfirmDelete" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="change-status-modal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" asp-action="ChangeStatus" asp-controller="Orders" asp-area="Admin">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thay đổi trạng thái đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="orderId" class="order-id-input"/>
+                    <p class="text-center">Mã đơn hàng: #<span class="order-id-text">123837</span></p>
+                    <select class="form-select status-select" name="statusId" aria-label="Trạng thái đơn hàng"asp-items="@ViewBag.Statuses">
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const changeStatusModal = document.getElementById('change-status-modal');
+            if (changeStatusModal)
+                {
+                    changeStatusModal.addEventListener('show.bs.modal', function (event) {
+                        const dataContainer = event.relatedTarget.closest('.order-data-container');
+                        const orderData = {
+                            id: dataContainer.dataset.id,
+                            status: dataContainer.dataset.status
+                        };
+                        const modalData = {
+                            id: $(changeStatusModal).find('.order-id-input'),
+                            text: $(changeStatusModal).find('.order-id-text'),
+                            status: $(changeStatusModal).find('.status-select')
+                        };
+                        modalData.id.val(orderData.id);
+                        modalData.text.text(orderData.id);
+                        modalData.status.val(orderData.status);
+                    });
+                }
+              
+            $("#btnConfirmDelete").on("click", function () {
+                let idToDelete = $("#IdToDelete").val();
+                let UrlHandle = "/admin/orders/delete";
+
+                $.ajax({
+                    url: UrlHandle,
+                    type: "POST",
+                    data: {
+                        id: idToDelete,
+                    },
+                    success: function (data) {
+                        if (data.status === 0){
+                            $("#deleteModal").modal("hide");
+                            $("#row-" + idToDelete).remove();
+                            toastr.success("Xóa đơn hàng thành công");
+                        }
+                        else {
+                            toastr.error("Đang bị lỗi, vui lòng quay lại sau");
+                        }
+                     }
+                    })
+                })
+
+        });
+
+    </script>
+    <script type="text/javascript">
+        function DisplayDeleteModal(id) {
+            $("#IdToDelete").val(id);
+            $("#deleteModal").modal("show");
+        }
+    </script>
+}

@@ -1,0 +1,31 @@
+@model IList<DoAnWeb.Models.Blog>
+@foreach (var post in Model)
+{
+    <div class="col-md-4 d-flex ftco-animate fadeInUp ftco-animated">
+        <div class="blog-entry justify-content-end">
+            <a asp-action="Detail" asp-controller="BLog" asp-route-id="@post.BlogId" asp-route-slug="@post.BlogSlug" class="block-20" style="background-image: url('@post.BlogImage');">
+            </a>
+            <div class="text pt-4">
+                <div class="meta mb-3">
+                    <div>
+                        <a href="#">@post.CreatedDate?.ToString("dd/MM/yyyy")</a>
+                    </div>
+                    <div>
+                        <a href="#">@post.CreatedBy?.FullName</a>
+                    </div>
+                    <div>
+                        <a href="#" class="meta-chat">
+                            <span class="icon-chat"></span>@post.BlogViewCount
+                        </a>
+                    </div>
+                </div>
+                <h3 class="heading mt-2">
+                    <a asp-action="Detail" asp-controller="BLog" asp-route-id="@post.BlogId" asp-route-slug="@post.BlogSlug">@post.BlogTitle</a>
+                </h3>
+                <p>
+                    <a asp-action="Detail" asp-controller="BLog" asp-route-id="@post.BlogId" asp-route-slug="@post.BlogSlug" class="btn btn-primary">Đọc thêm</a>
+                </p>
+            </div>
+        </div>
+    </div>
+}

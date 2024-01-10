@@ -1,0 +1,75 @@
+@model DoAnWeb.Models.Order
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+<div class="pagetitle">
+    <h4 class="text-center">Thông tin chi tiết đơn hàng</h4>
+</div><!-- End Page Title -->
+<section class="section mt-4 container-fluid">
+    <div class="row mt-3">
+        <div class="col-md-1"></div>
+        <div class="form-addnew col-md-12 d-flex">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Mã đơn hàng</label>
+                        <input type="text" value="@Model.OrderId" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Tên khách hàng</label>
+                        <input type="text" value="@Model.FullName" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Số điện thoại khách hàng</label>
+                        <input type="text" value="@Model.PhoneNumber" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Địa chỉ Email</label>
+                        <input type="text" value="@Model.Email" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Địa chỉ nhận xe</label>
+                        <input type="text" value="@Model.Address" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Thương hiệu xe</label>
+                        <input type="text" value="@Model.Car.Brand" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Dòng xe</label>
+                        <input type="text" value="@Model.Car.Brand" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Giá thuê</label>
+                        <input type="text" value="@Model.Car.PricePerDay" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Thời gian đặt</label>
+                        <input type="text" value="@Model.OrderDate?.ToString("HH:mm:ss - dd/MM/yyyy")" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Ngày nhận xe mong muốn</label>
+                        <input type="text" value="@Model.StartDate?.ToString("dd/MM/yyyy")" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Ngày trả xe</label>
+                        <input type="text" value="@Model.EndDate?.ToString("dd/MM/yyyy")" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Số ngày mượn xe</label>
+                        <input type="text" value="@Model.BookingDays" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mt-2">
+                        <label class="form-label">Tổng chi phí</label>
+                        <input type="text" value="@Model.TotalFee?.ToString("#,00# VNĐ")" class="form-control Disabled mce-content-readonly" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="avt-box px-4">
+                    <img id="image-preview" src="@Model.Car.CarImages.LastOrDefault()?.ImageUrl" class="w-100" alt="Ảnh xe"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

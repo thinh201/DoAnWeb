@@ -1,0 +1,259 @@
+﻿@using DoAnWeb.Models.ViewModel
+@model CreateOrderModel
+<div class="modal fade booking-modal" id="book-car-modal" tabindex="-1" role="dialog" aria-labelledby="book-car-modal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+        <form class="modal-content" asp-action="Create" asp-controller="Order" method="POST">
+            <div class="modal-header">
+                <h5 class="modal-title w-100 text-center" id="exampleModalLongTitle">Xác nhận đặt xe</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" class="car-id" asp-for="CarId"/>
+                <div class="booking-modal-body p-2">
+                    <div class="modal-product-info">
+                        <div class="row">
+                            <div class="col-sm-12 col-lg-6 col-xl-6">
+                                <div class="modal-info-image">
+                                    <img class="w-100 car-image" src="~/images/car-2.jpg" alt="car-image"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-lg-6 col-xl-6">
+                                <div class="modal-info-content">
+                                    <h4 class="modal-info-name car-name">Hyundai Venue 2023</h4>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        <span>Giá thuê:</span>
+                                        <div>
+                                            <span class="modal-booking-pirce car-price">500.000</span>
+                                            <span>VNĐ/ngày</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3 user-select-none">
+                                        <span>Số lượng:</span>
+                                        <div class="d-flex align-items-center quantity-item-box justify-content-center">
+                                            <span class="btn-decrease quantity-cart-btn" data-id="1">-</span>
+                                            <input asp-for="Quantity" type="text" class="Disabled quantity-item-input" id="quantity-input"/>
+                                            <span class="btn-increase quantity-cart-btn" data-id="1">+</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-user-info mt-3">
+                        <h4 class="text-center w-100">Thông tin đặt xe</h4>
+                        <div class="row user-form">
+                            <div class="col-sm-12 col-xl-6 col-lg-6">
+                                <div class=" form-group">
+                                    <label>Họ và tên</label>
+                                    <input asp-for="FullName" placeholder="Nhập họ và tên..." class="form-control full-name"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-xl-6 col-lg-6">
+                                <div class=" form-group">
+                                    <label>Địa chỉ</label>
+                                    <input asp-for="Address" placeholder="Nhập địa chỉ của bạn..." class="form-control address"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-xl-6 col-lg-6">
+                                <div class=" form-group">
+                                    <label>Email</label>
+                                    <input asp-for="Email" placeholder="Nhập email của bạn..." class="form-control email"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-xl-6 col-lg-6">
+                                <div class=" form-group">
+                                    <label>Số điện thoại</label>
+                                    <input asp-for="PhoneNumber" placeholder="Nhập số điện thoại" class="form-control phone-number"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-xl-6 col-lg-6">
+                                <div class=" form-group">
+                                    <label>Ngày nhận xe</label>
+                                    <input asp-for="StartDate" type="date" class="form-control start-date"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-xl-6 col-lg-6">
+                                <div class=" form-group">
+                                    <label>Ngày trả</label>
+                                    <input asp-for="EndDate" type="date" class="form-control end-date"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-xl-6 col-lg-6 my-2">
+                                <div class="form-check">
+                                    <input asp-for="UseDefaultInfo" class="form-check-input" type="checkbox" id="use-default">
+                                    <label class="form-check-label" for="use-default">
+                                        Sử dụng thông tin mặc định
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-checkout-info mt-3">
+                        <div class="row">
+                            <div class="col-sm-0 col-lg-2 col-xl-2"></div>
+                            <div class="col-sm-0 col-lg-8 col-xl-8">
+                                <div class="checkout-info-table">
+                                    <div class="d-flex justify-content-between checkout-info-row">
+                                        <span>Số ngày</span>
+                                        <span class="modal-booking-pirce"><span class="booking-days"></span> ngày</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between checkout-info-row">
+                                        <span>Tạm tính</span>
+                                        <span class="modal-booking-pirce"><span class="temp-cost">20000</span> VNĐ</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between checkout-info-row">
+                                        <span>Giảm giá</span>
+                                        <span class="modal-booking-pirce">Không có</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between checkout-info-row">
+                                        <span>Tổng thanh toán</span>
+                                        <span class="modal-booking-pirce">
+                                            <span class="total-cost">20000</span> VNĐ
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy bỏ</button>
+                <button type="submit" class="btn btn-primary">Xác nhận</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+            const bookCarModal = document.getElementById('book-car-modal');
+            function formatCash(str) {
+                const cash = str.toString();
+             	return cash.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            
+            function getDayDiff(startDate, endDate) {
+              const msInDay = 24 * 60 * 60 * 1000;
+              return Math.round(
+                Math.abs(endDate - startDate) / msInDay
+              );
+            }
+            
+            if (bookCarModal) {
+               bookCarModal.addEventListener('show.bs.modal', event => {
+                    const dataContainer = $(event.relatedTarget).closest('.car-data-container');
+                    const carData = {
+                        id: dataContainer.data("id"),
+                        name: dataContainer.data("name"),
+                        image: dataContainer.data("image"),
+                        price: dataContainer.data("price")
+                    }
+                    const modalData = {
+                        carId: $(bookCarModal).find('.car-id'),
+                        carName: $(bookCarModal).find('.car-name'),
+                        carImage: $(bookCarModal).find('.car-image'),
+                        carPrice: $(bookCarModal).find('.car-price'),
+                        startDate: $(bookCarModal).find('.start-date'),
+                        endDate: $(bookCarModal).find('.end-date'),
+                        bookingDays: $(bookCarModal).find('.booking-days'),
+                        tempCost: $(bookCarModal).find('.temp-cost'),
+                        totalCost: $(bookCarModal).find('.total-cost'),
+                        userForm : $(bookCarModal).find('.user-form'),
+                        quantity: $(bookCarModal).find('#quantity-input'),
+                        defaultInfo: $(bookCarModal).find('#use-default')
+                    }
+                    modalData.quantity.val(1);
+                    let startDate = new Date();
+                    let endDate = new Date(startDate)
+                    endDate.setDate(startDate.getDate() + 1) 
+                    let bookingDays = getDayDiff(startDate, endDate)
+                    let quantity = +modalData.quantity.val();
+                    modalData.quantity.val(quantity);
+                    modalData.carId.val(carData.id);
+                    modalData.carName.text(carData.name);
+                    modalData.carImage.attr('src', carData.image);
+                    modalData.carPrice.text(formatCash(carData.price));
+                    modalData.startDate.val(startDate.toISOString().split('T')[0]);
+                    modalData.endDate.val(endDate.toISOString().split('T')[0]);
+                    modalData.bookingDays.text(bookingDays);
+                    modalData.tempCost.text(formatCash(carData.price));
+                    modalData.totalCost.text(formatCash(carData.price));
+                    
+                    function toggleDefaultInfo() {
+                        if (modalData.defaultInfo.is(':checked')) {
+                            modalData.userForm.addClass("d-none")
+                        } else {
+                            modalData.userForm.removeClass("d-none")
+                        }
+                    }
+                    
+                    function updatePayment(quantity, days) {
+                        modalData.tempCost.text(formatCash(carData.price * quantity * days));
+                        modalData.totalCost.text(formatCash(carData.price * quantity * days));
+                    }
+                    
+                    modalData.defaultInfo.on('change', function() {
+                        toggleDefaultInfo();
+                    });
+                    
+                    modalData.startDate.on('change', function() {
+                        if (new Date($(this).val()) < new Date()) {
+                            const newStartDate = new Date();
+                            modalData.startDate.val(newStartDate.toISOString().split('T')[0]);
+                            return;
+                        }
+                        startDate = new Date($(this).val());
+                        endDate = modalData.endDate.val() ? new Date(modalData.endDate.val()) : new Date(startDate);
+                        bookingDays = getDayDiff(startDate, endDate);
+                        modalData.bookingDays.text(bookingDays);
+                        modalData.tempCost.text(formatCash(carData.price * bookingDays));
+                        modalData.totalCost.text(formatCash(carData.price * bookingDays));
+                        updatePayment(quantity, bookingDays);
+                    });
+                    modalData.endDate.on('change', function() {
+                        if (new Date($(this).val()) <= startDate) {
+                            const newEndDate = new Date();
+                            newEndDate.setDate(startDate.getDate() + 1);
+                            modalData.endDate.val(newEndDate.toISOString().split('T')[0]);
+                            bookingDays = 1;
+                            modalData.bookingDays.text(bookingDays);
+                            modalData.tempCost.text(formatCash(carData.price * bookingDays));
+                            modalData.totalCost.text(formatCash(carData.price * bookingDays));
+                            updatePayment(quantity, bookingDays);
+                            return;
+                        }
+                        endDate = new Date($(this).val());
+                        bookingDays = getDayDiff(startDate, endDate) + 1;
+                        modalData.bookingDays.text(bookingDays);
+                        modalData.tempCost.text(formatCash(carData.price * bookingDays));
+                        modalData.totalCost.text(formatCash(carData.price * bookingDays));
+                        updatePayment(quantity, bookingDays);
+                    });
+                    
+                    $(".btn-decrease").on("click", function () {
+                        if (quantity > 1) {
+                            quantity--;
+                            modalData.quantity.val(quantity);
+                        } else {
+                            alert("Đã đạt số lượng tối thiểu,")
+                        }
+                        updatePayment(quantity, bookingDays);
+                    });
+                    $(".btn-increase").on("click", function () {
+                        if (quantity < 30) {
+                            quantity++;
+                            modalData.quantity.val(quantity);
+                        } else {
+                            alert("Đã đạt số lượng tối đa,")
+                        }
+                        updatePayment(quantity, bookingDays);
+                    });
+                });
+            }
+    });  
+</script>

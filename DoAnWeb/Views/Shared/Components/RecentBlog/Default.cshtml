@@ -1,0 +1,28 @@
+@model IList<DoAnWeb.Models.Blog>;
+
+@foreach (var blog in Model)
+{
+    <div class="block-21 mb-4 d-flex">
+        <a class="blog-img mr-4" style="background-image: url('@blog.BlogImage');"></a>
+        <div class="text">
+            <h3 class="heading">
+                <a asp-controller="BLog" asp-action="Detail" asp-route-id="@blog.BlogId" asp-route-slug="@blog.BlogSlug">@blog.BlogTitle</a>
+            </h3>
+            <div class="meta">
+                <div>
+                    <a href="#">
+                        <span class="icon-calendar"></span>@blog.CreatedDate?.ToString("dd/MM/yyyy")
+                    </a>
+                </div>
+                <div>
+                    <a href="#">
+                        <span class="icon-person"></span>@blog.CreatedBy?.FullName
+                    </a>
+                </div>
+                <div>
+                    <a href="#"><span class="icon-chat"></span>0</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

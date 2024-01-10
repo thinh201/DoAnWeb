@@ -1,0 +1,27 @@
+﻿@model List<Car>
+@using DoAnWeb.Models;
+@using DoAnWeb.Ultilities;
+@foreach (var car in Model)
+{
+    <div class="item">
+        <div class="car-wrap rounded ftco-animate car-data-container" data-id="@car.CarId" data-price="@car.PricePerDay" data-name="@car.Brand @car.Model" data-image="@car.CarImages?.LastOrDefault()?.ImageUrl">
+            <div class="img rounded d-flex align-items-end" style="background-image: url('@car.CarImages.FirstOrDefault()?.ImageUrl');">
+            </div>
+            <div class="text">
+                <h2 class="mb-0">
+                    <a href="#">@car.Model</a>
+                </h2>
+                <div class="d-flex mb-3">
+                    <span class="cat">@car.Brand</span>
+                    <p class="price ml-auto">
+                        @car.PricePerDay?.ToString("#,00# VNĐ") <span>/ngày</span>
+                    </p>
+                </div>
+                <p class="d-flex mb-0 d-block">
+                    <a data-bs-toggle="modal" data-bs-target="#book-car-modal" class="btn btn-primary py-2 mr-1">Đặt xe</a>
+                    <a asp-action="Detail" asp-controller="Car" asp-route-id="@car.CarId" asp-route-slug="@car.Slug" class="btn btn-secondary py-2 ml-1">Chi tiết</a>
+                </p>
+            </div>
+        </div>
+    </div>
+}
